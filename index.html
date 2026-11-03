@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f2f4f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12161c" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Træning">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<title>Christians Træningsprogram</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+/* Layout: a gym-wall training card. Header with week plan, then one band per day, colored like bumper plates (25 red, 20 blue, 10 green). */
+:root{
+  --bg:#f2f4f6; --surface:#ffffff; --fg:#18202b; --muted:#5a6676; --line:#d9dee5;
+  --fig:#18202b; --ghost:#18202b; --equip:#9aa5b3;
+  --a:#c8322b; --b:#1f5fbf; --c:#2e8a4f;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161c; --surface:#1b2129; --fg:#e8ecf1; --muted:#9aa6b5; --line:#2c3440;
+  --fig:#e8ecf1; --ghost:#e8ecf1; --equip:#5d6878;
+  --a:#ef5a50; --b:#5a92ec; --c:#4fbf78; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161c; --surface:#1b2129; --fg:#e8ecf1; --muted:#9aa6b5; --line:#2c3440;
+  --fig:#e8ecf1; --ghost:#e8ecf1; --equip:#5d6878;
+  --a:#ef5a50; --b:#5a92ec; --c:#4fbf78; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--body)}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 56px;display:grid;gap:40px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.05}
+h1{font-size:clamp(2.4rem,6vw,3.6rem);text-transform:uppercase;letter-spacing:.01em}
+h2{font-size:clamp(1.8rem,4vw,2.4rem);text-transform:uppercase}
+h3{font-size:1.35rem}
+p{margin:0}
+.lead{max-width:62ch;color:var(--muted);margin-top:10px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:24px}
+.fact{border-top:3px solid var(--fg);padding-top:10px}
+.fact b{display:block;font-family:var(--display);font-size:1.05rem;text-transform:uppercase;letter-spacing:.06em}
+.fact span{color:var(--muted);font-size:.95rem}
+.week{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.chip{font-family:var(--display);font-weight:600;font-size:1rem;letter-spacing:.04em;padding:6px 12px;border-radius:999px;border:1.5px solid var(--line);color:var(--fg);text-decoration:none}
+.chip i{font-style:normal;display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:var(--d,var(--line))}
+.chip:focus-visible,.tab:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.day{display:grid;gap:18px;scroll-margin-top:16px}
+.dayhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;border-bottom:4px solid var(--d);padding-bottom:8px}
+.dayhead .tag{font-family:var(--display);font-weight:700;color:var(--d);font-size:1.1rem;letter-spacing:.08em;text-transform:uppercase}
+.dayhead p{color:var(--muted);flex-basis:100%}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.ex svg{display:block;width:100%;height:auto;background:color-mix(in srgb,var(--d) 7%,var(--surface));border-bottom:1px solid var(--line)}
+.exbody{padding:14px 16px 16px;display:grid;gap:8px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.num{font-family:var(--display);font-weight:700;color:var(--d);font-size:1.1rem}
+.dose{display:flex;flex-wrap:wrap;gap:6px}
+.dose span{font-variant-numeric:tabular-nums;font-size:.85rem;font-weight:600;padding:2px 8px;border-radius:4px;background:color-mix(in srgb,var(--d) 14%,transparent);color:var(--fg)}
+.ex ul{margin:0;padding-left:18px;font-size:.95rem;display:grid;gap:2px}
+.alt{font-size:.88rem;color:var(--muted)}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.rules div{display:grid;gap:6px}
+.rules ul{margin:0;padding-left:18px;color:var(--muted)}
+.note{font-size:.88rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.chip{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Christians Træningsprogram</h1>
+    <p class="lead">Tre træninger med to hovedmuskelgrupper hver, bygget til fedttab hvor musklerne bliver. Tunge basisøvelser først, så isolationsøvelser. Figurerne viser bevægelsen: den faste skygge er slutpositionen.</p>
+    <nav class="week" aria-label="Træningsdage">
+      <a class="chip" href="#dag-a" style="--d:var(--a)"><i></i>A · Bryst, skuldre og triceps</a>
+      <a class="chip" href="#dag-b" style="--d:var(--b)"><i></i>B · Ryg og biceps</a>
+      <a class="chip" href="#dag-c" style="--d:var(--c)"><i></i>C · Ben og numse</a>
+    </nav>
+    <div class="facts">
+      <div class="fact"><b>3 dage om ugen</b><span>Man A, ons B, fre C. Har du mere tid: A B C pause A B C pause.</span></div>
+      <div class="fact"><b>1-2 reps i reserve</b><span>Stop hvert sæt når du kunne have taget 1-2 til med god teknik.</span></div>
+      <div class="fact"><b>Dobbelt progression</b><span>Når du rammer toppen af rep-intervallet i alle sæt, så op i vægt næste gang.</span></div>
+      <div class="fact"><b>Opvarmning</b><span>5 min let cardio, derefter 2-3 lette sæt på dagens første øvelse.</span></div>
+    </div>
+  </header>
+  <main id="days" style="display:grid;gap:44px"></main>
+
+  <section class="rules" aria-label="Fedttab">
+    <div><h3>Det der faktisk taber fedtet</h3><ul>
+      <li>Kalorieunderskud på cirka 400-500 kcal om dagen.</li>
+      <li>Mål: 0,5-1 % af kropsvægten om ugen. Ved 100 kg er det 0,5-1 kg.</li>
+      <li>Vej dig 3-4 morgener om ugen og følg gennemsnittet, ikke enkeltdage.</li></ul></div>
+    <div><h3>Det der bevarer musklerne</h3><ul>
+      <li>Protein cirka 1,8-2 g pr. kg, altså 180-200 g om dagen.</li>
+      <li>Hold vægtene tunge. Falder styrken i 2+ uger, er underskuddet for stort.</li>
+      <li>7-9 timers søvn.</li></ul></div>
+    <div><h3>Ekstra forbrænding</h3><ul>
+      <li>8.000-10.000 skridt om dagen giver mere end hård cardio og stjæler ikke fra benene.</li>
+      <li>Vil du have cardio: 2 × 20-30 min roligt tempo på hviledage.</li></ul></div>
+  </section>
+  <p class="note">Generel vejledning, ikke lægefaglig rådgivning. Gør noget ondt i et led, så skift til alternativet under øvelsen.</p>
+</div>
+
+<script>
+(function(){
+const F={t:'floor'};
+const S={tors:['s','p'],arm:['s','e','w'],leg:['p','k','a','t']};
+const SIDE=[S.leg,S.tors,S.arm];
+const DAYS=[
+{id:'dag-a',key:'a',tag:'Dag A',title:'Bryst, skuldre og triceps',
+ why:'Alle tre muskler presser. Bryst og forreste skulder arbejder i hver presøvelse, og triceps strækker albuen i dem alle. Derfor kommer triceps til sidst, når den allerede er varm.',
+ ex:[
+ {n:'Bænkpres',d:['4 sæt','6-8 reps','pause 2-3 min'],c:['Skulderblade samlet og ned i bænken','Stangen ned til nederste del af brystet','Albuerne cirka 45 grader ud fra kroppen'],alt:'Håndvægtspres på flad bænk',
+  p:{pr:[F,{t:'rect',x:40,y:101,w:110,h:6},{t:'rect',x:50,y:107,w:5,h:33},{t:'rect',x:135,y:107,w:5,h:33},{t:'plate',at:'w',r:13}],
+   a:{h:[48,90],s:[62,95],p:[115,95],k:[142,90],a:[150,138],t:[162,140],e:[63,70],w:[64,46]},b:{e:[80,100],w:[68,80]}}},
+ {n:'Skrå håndvægtspres',d:['3 sæt','8-10 reps','pause 2 min'],c:['Bænken i 30 grader, ikke stejlere','Håndvægtene ned til brysthøjde','Pres op og let ind mod hinanden'],alt:'Skrå bænkpres med stang eller maskine',
+  p:{pr:[F,{t:'line',pts:[[74,70],[108,110],[152,110]],w:7},{t:'rect',x:118,y:113,w:6,h:27}],
+   a:{h:[74,50],s:[84,66],p:[116,104],k:[146,100],a:[148,138],t:[160,140],e:[86,40],w:[86,18]},b:{e:[66,80],w:[80,58]},db:1}},
+ {n:'Skulderpres, siddende',d:['3 sæt','8-10 reps','pause 2 min'],c:['Ryggen mod ryglænet, spænd maven','Håndvægtene starter i ørehøjde','Pres lige op uden at svaje i lænden'],alt:'Skulderpres i maskine',
+  p:{pr:[F,{t:'line',pts:[[88,52],[90,112],[128,112]],w:7},{t:'rect',x:105,y:115,w:6,h:25}],
+   a:{h:[100,46],s:[100,60],p:[100,106],k:[130,106],a:[132,138],t:[144,140],e:[112,76],w:[110,52]},b:{e:[104,38],w:[103,16]},db:1}},
+ {n:'Sidehæv',d:['3 sæt','12-15 reps','pause 1 min'],c:['Let bøjede albuer, låst vinkel','Løft til skulderhøjde, ikke højere','Langsomt ned, ingen sving'],alt:'Sidehæv i kabel',
+  p:{front:1,pr:[F],
+   a:{h:[100,28],n:[100,42],ls:[88,45],rs:[112,45],pc:[100,92],lh:[93,92],rh:[107,92],lk:[92,116],rk:[108,116],la:[91,138],ra:[109,138],le:[84,70],lw:[83,92],re:[116,70],rw:[117,92]},
+   b:{le:[66,50],lw:[44,52],re:[134,50],rw:[156,52]},dbs:['lw','rw']}},
+ {n:'Triceps pushdown, kabel',d:['3 sæt','10-12 reps','pause 1-1,5 min'],c:['Albuerne klistret til siden','Stræk helt ud og klem i bunden','Kun underarmen bevæger sig'],alt:'Pushdown med reb',
+  p:{pr:[F,{t:'line',pts:[[150,-6],[150,140]],w:5},{t:'cable',from:[150,2],to:'w'}],
+   a:{h:[96,36],s:[96,50],p:[96,100],k:[98,120],a:[96,138],t:[108,140],e:[100,82],w:[116,66]},b:{w:[104,110]},db:1}},
+ {n:'Triceps overhead, håndvægt',d:['3 sæt','10-12 reps','pause 1-1,5 min'],c:['Albuerne peger op og bliver der','Sænk vægten langt ned bag nakken','Stræk op uden at svaje i ryggen'],alt:'Overhead extension i kabel',
+  p:{pr:[F,{t:'line',pts:[[88,52],[90,112],[128,112]],w:7},{t:'rect',x:105,y:115,w:6,h:25}],
+   a:{h:[100,46],s:[100,60],p:[100,106],k:[130,106],a:[132,138],t:[144,140],e:[104,28],w:[88,50]},b:{w:[106,0]},db:1}}
+ ]},
+{id:'dag-b',key:'b',tag:'Dag B',title:'Ryg og biceps',
+ why:'Alle træk med armene bruger biceps til at bøje albuen. Ryggen tager de tunge træk først, så får biceps det sidste ord, og bagerste skulder tager face pulls.',
+ ex:[
+ {n:'Lat pulldown',d:['4 sæt','8-10 reps','pause 2 min'],c:['Greb lidt bredere end skuldrene','Træk stangen til øverste del af brystet','Tænk "albuer ned i lommerne"'],alt:'Pull-ups, evt. med elastik',
+  p:{pr:[F,{t:'rect',x:85,y:108,w:35,h:6},{t:'rect',x:100,y:114,w:6,h:26},{t:'line',pts:[[118,92],[138,92]],w:7},{t:'cable',from:[96,-10],to:'w'}],
+   a:{h:[100,48],s:[100,62],p:[100,106],k:[130,104],a:[132,138],t:[144,140],e:[98,36],w:[96,12]},b:{h:[94,49],s:[96,62],e:[112,84],w:[106,62]},db:1}},
+ {n:'Bøjet roning med stang',d:['4 sæt','6-8 reps','pause 2-3 min'],c:['Hofterne bagud, ryggen lige','Overkroppen 30-45 grader over vandret','Træk stangen til navlen'],alt:'Brystunderstøttet roning i maskine',
+  p:{pr:[F,{t:'plate',at:'w',r:13}],
+   a:{h:[60,62],s:[74,70],p:[120,82],k:[128,110],a:[118,138],t:[130,140],e:[76,94],w:[78,118]},b:{e:[104,64],w:[94,90]}}},
+ {n:'Siddende kabelroning',d:['3 sæt','10-12 reps','pause 1,5-2 min'],c:['Brystet op hele vejen','Træk håndtaget til maven','Klem skulderbladene sammen et sekund'],alt:'Etarmsroning med håndvægt',
+  p:{pr:[F,{t:'line',pts:[[10,60],[10,140]],w:5},{t:'rect',x:95,y:120,w:40,h:6},{t:'line',pts:[[50,98],[50,130]],w:5},{t:'cable',from:[10,92],to:'w'}],
+   a:{h:[92,61],s:[98,74],p:[112,117],k:[82,104],a:[58,116],t:[54,104],e:[82,82],w:[62,90]},b:{h:[110,58],s:[108,72],e:[128,82],w:[110,92]},db:1}},
+ {n:'Face pull',d:['3 sæt','12-15 reps','pause 1 min'],c:['Reb i ansigtshøjde','Træk mod ørerne, albuerne højt','Godt for skuldrenes sundhed'],alt:'Omvendt flyes med håndvægte',
+  p:{pr:[F,{t:'line',pts:[[12,-6],[12,140]],w:5},{t:'cable',from:[12,46],to:'w'}],
+   a:{h:[100,36],s:[100,50],p:[102,100],k:[104,120],a:[102,138],t:[114,140],e:[82,56],w:[62,50]},b:{e:[118,44],w:[104,36]},db:1}},
+ {n:'Biceps curl, håndvægte',d:['3 sæt','10-12 reps','pause 1-1,5 min'],c:['Albuerne stille ved siden','Drej håndfladen op mens du løfter','3 sekunder ned'],alt:'Curl med stang eller EZ-stang',
+  p:{pr:[F],a:{h:[100,36],s:[100,50],p:[100,100],k:[101,120],a:[100,138],t:[112,140],e:[102,80],w:[104,108]},b:{w:[88,58]},db:1}},
+ {n:'Hammer curl',d:['3 sæt','10-12 reps','pause 1 min'],c:['Tommelfingeren peger op hele vejen','Rammer underarm og den yderste biceps','Ingen sving med hoften'],alt:'Hammer curl med reb i kabel',
+  p:{pr:[F],a:{h:[100,36],s:[100,50],p:[100,100],k:[101,120],a:[100,138],t:[112,140],e:[99,80],w:[98,108]},b:{w:[84,62]},db:1}}
+ ]},
+{id:'dag-c',key:'c',tag:'Dag C',title:'Ben og numse',
+ why:'Lår og balder arbejder sammen i hvert squat, løft og stød. Dagen går fra den tungeste knæbøjning til hoftestræk og ender med baglår og lægge.',
+ ex:[
+ {n:'Squat',d:['4 sæt','6-8 reps','pause 2-3 min'],c:['Fødderne skulderbredde, tæerne lidt ud','Knæene følger tæerne','Ned til lårene er vandrette eller lavere'],alt:'Goblet squat eller hack squat',
+  p:{pr:[F,{t:'plate',at:'w',r:13}],
+   a:{h:[100,22],s:[100,36],p:[100,76],k:[103,106],a:[100,138],t:[114,140],e:[86,44],w:[98,35]},b:{h:[104,50],s:[100,63],p:[83,100],k:[112,108],e:[86,72],w:[98,62]}}},
+ {n:'Rumænsk dødløft',d:['3 sæt','8-10 reps','pause 2 min'],c:['Skub hofterne bagud, knæene let bøjet','Stangen tæt langs benene','Stop når baglårene strammer'],alt:'Rumænsk dødløft med håndvægte',
+  p:{pr:[F,{t:'plate',at:'w',r:13}],
+   a:{h:[102,24],s:[102,38],p:[100,78],k:[101,108],a:[100,138],t:[112,140],e:[102,58],w:[103,80]},b:{h:[68,64],s:[80,68],p:[118,80],k:[106,108],e:[80,88],w:[80,108]}}},
+ {n:'Hip thrust',d:['3 sæt','8-12 reps','pause 2 min'],c:['Skuldrene mod bænkkanten','Skub gennem hælene','Klem numsen 1 sekund i toppen'],alt:'Glute bridge på gulvet',
+  p:{pr:[F,{t:'rect',x:18,y:98,w:42,h:8},{t:'rect',x:24,y:106,w:6,h:34},{t:'rect',x:48,y:106,w:6,h:34},{t:'plate',at:'p',r:13}],
+   a:{h:[46,90],s:[58,98],p:[86,124],k:[116,104],a:[122,138],t:[134,140],e:[76,110],w:[86,118]},b:{p:[92,96],k:[120,98],e:[76,102],w:[90,94]}}},
+ {n:'Bulgarsk split squat',d:['3 sæt','8-10 reps pr. ben','pause 1,5 min'],c:['Bagerste fod på bænken','Gå lige ned, ikke frem','Lidt foroverlæn rammer numsen mere'],alt:'Udfaldsskridt baglæns',
+  p:{chains:[['p','rk','ra'],S.leg,S.tors,S.arm],pr:[F,{t:'rect',x:140,y:100,w:44,h:7},{t:'rect',x:172,y:107,w:6,h:33}],
+   a:{h:[96,22],s:[96,36],p:[96,76],k:[90,106],a:[86,138],t:[74,140],rk:[114,102],ra:[142,98],e:[96,58],w:[96,80]},b:{h:[95,52],s:[96,66],p:[100,106],k:[72,110],rk:[112,132],e:[96,88],w:[96,110]},db:1}},
+ {n:'Liggende lårcurl',d:['3 sæt','10-12 reps','pause 1-1,5 min'],c:['Hofterne presset ned i puden','Bøj helt op','Kontrolleret ned, ingen slag'],alt:'Siddende lårcurl',
+  p:{chains:[['p','k','a'],S.tors,S.arm],pr:[F,{t:'rect',x:30,y:100,w:130,h:6},{t:'rect',x:40,y:106,w:6,h:34},{t:'rect',x:146,y:106,w:6,h:34},{t:'pad',at:'a',r:6}],
+   a:{h:[38,88],s:[52,94],p:[104,94],k:[138,94],a:[172,94],e:[60,108],w:[44,104]},b:{a:[126,62]}}},
+ {n:'Lægløft, stående',d:['3 sæt','12-15 reps','pause 1 min'],c:['Forfoden på kanten af et trin','Helt ned i bunden, helt op på tæerne','Hold toppen 1 sekund'],alt:'Lægløft i benpres',
+  p:{pr:[F,{t:'rect',x:106,y:128,w:30,h:12}],
+   a:{h:[100,22],s:[100,36],p:[100,76],k:[100,106],a:[100,136],t:[114,129],e:[100,56],w:[100,78]},b:{h:[100,10],s:[100,24],p:[100,64],k:[100,94],a:[102,120],e:[100,44],w:[100,66]},db:1}}
+ ]}
+];
+const NS='http://www.w3.org/2000/svg';
+const FRONT=[['lh','lk','la'],['rh','rk','ra'],['lh','rh'],['n','pc'],['ls','rs'],['ls','le','lw'],['rs','re','rw']];
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e}
+function pose(p,u){const o={};for(const k in p.a)o[k]=p.b[k]?[p.a[k][0]+(p.b[k][0]-p.a[k][0])*u,p.a[k][1]+(p.b[k][1]-p.a[k][1])*u]:p.a[k];return o}
+function pt(P,ref){return typeof ref==='string'?P[ref]:ref}
+function draw(g,p,P,day,ghost){
+  g.textContent='';
+  const col=ghost?'var(--ghost)':'var(--fig)';
+  const chains=p.front?FRONT:(p.chains||SIDE);
+  for(const c of chains){const pts=c.filter(k=>P[k]).map(k=>P[k].join(',')).join(' ');
+    const torso=(c[0]==='s'&&c[1]==='p')||(c[0]==='n'&&c[1]==='pc');
+    g.appendChild(el('polyline',{points:pts,fill:'none',stroke:col,'stroke-width':torso?11:7,'stroke-linecap':'round','stroke-linejoin':'round'}))}
+  g.appendChild(el('circle',{cx:P.h[0],cy:P.h[1],r:8,fill:col}));
+  if(ghost)return;
+  for(const r of p.pr){
+    if(r.t==='cable'){const a=pt(P,r.from),b=pt(P,r.to);g.insertBefore(el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'var(--equip)','stroke-width':1.5}),g.firstChild)}
+    else if(r.t==='plate'){const c=P[r.at];g.appendChild(el('circle',{cx:c[0],cy:c[1],r:r.r,fill:day}));g.appendChild(el('circle',{cx:c[0],cy:c[1],r:2.5,fill:'var(--surface)'}))}
+    else if(r.t==='pad'){const c=P[r.at];g.appendChild(el('circle',{cx:c[0],cy:c[1],r:r.r,fill:'var(--equip)'}))}
+  }
+  for(const k of (p.dbs||(p.db?['w']:[]))){const c=P[k];
+    g.appendChild(el('rect',{x:c[0]-7,y:c[1]-3,width:14,height:6,rx:2,fill:day}));}
+}
+function staticProps(svg,p){
+  for(const r of p.pr){
+    if(r.t==='floor')svg.appendChild(el('line',{x1:0,y1:140,x2:200,y2:140,stroke:'var(--equip)','stroke-width':2}));
+    else if(r.t==='rect')svg.appendChild(el('rect',{x:r.x,y:r.y,width:r.w,height:r.h,rx:1.5,fill:'var(--equip)'}));
+    else if(r.t==='line')svg.appendChild(el('polyline',{points:r.pts.map(q=>q.join(',')).join(' '),fill:'none',stroke:'var(--equip)','stroke-width':r.w,'stroke-linecap':'round','stroke-linejoin':'round'}));
+  }
+}
+const live=[];
+const root=document.getElementById('days');
+for(const d of DAYS){
+  const sec=document.createElement('section');sec.className='day';sec.id=d.id;sec.style.setProperty('--d','var(--'+d.key+')');
+  sec.innerHTML='<div class="dayhead"><span class="tag">'+d.tag+'</span><h2>'+d.title+'</h2><p>'+d.why+'</p></div>';
+  const grid=document.createElement('div');grid.className='grid';
+  d.ex.forEach((x,i)=>{
+    const card=document.createElement('article');card.className='ex';
+    const svg=el('svg',{viewBox:'0 -12 200 160',role:'img','aria-label':'Illustration af '+x.n});
+    staticProps(svg,x.p);
+    const gg=el('g',{opacity:.16});const gl=el('g',{});
+    svg.appendChild(gg);svg.appendChild(gl);
+    draw(gg,x.p,pose(x.p,1),'var(--'+d.key+')',true);
+    draw(gl,x.p,pose(x.p,0),'var(--'+d.key+')',false);
+    card.appendChild(svg);
+    const b=document.createElement('div');b.className='exbody';
+    b.innerHTML='<div class="top"><h3>'+x.n+'</h3><span class="num">'+d.key.toUpperCase()+(i+1)+'</span></div>'+
+      '<div class="dose">'+x.d.map(s=>'<span>'+s+'</span>').join('')+'</div>'+
+      '<ul>'+x.c.map(s=>'<li>'+s+'</li>').join('')+'</ul>'+
+      '<p class="alt">Alternativ: '+x.alt+'</p>';
+    card.appendChild(b);grid.appendChild(card);
+    live.push({g:gl,p:x.p,c:'var(--'+d.key+')',off:i*.37});
+  });
+  sec.appendChild(grid);root.appendChild(sec);
+}
+const still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!still){
+  const T=2600;
+  function tick(now){
+    for(const L of live){const ph=((now/T)+L.off)%1;const tri=ph<.5?ph*2:2-ph*2;const u=tri*tri*(3-2*tri);draw(L.g,L.p,pose(L.p,u),L.c,false)}
+    requestAnimationFrame(tick)}
+  requestAnimationFrame(tick);
+}
+})();
+</script>
+
+</body>
+</html>
